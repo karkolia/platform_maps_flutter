@@ -22,11 +22,9 @@ class PlatformMapController {
   ///   * [isMarkerInfoWindowShown] to check if the Info Window is showing.
   Future<void> showMarkerInfoWindow(MarkerId markerId) {
     if (Platform.isAndroid) {
-      return googleController!
-          .showMarkerInfoWindow(markerId.googleMapsMarkerId);
+      return googleController!.showMarkerInfoWindow(markerId.googleMapsMarkerId);
     } else if (Platform.isIOS) {
-      return appleController!
-          .showMarkerInfoWindow(markerId.appleMapsAnnoationId);
+      return appleController!.showMarkerInfoWindow(markerId.appleMapsAnnotationId);
     }
     throw ('Platform not supported.');
   }
@@ -41,11 +39,9 @@ class PlatformMapController {
   ///   * [isMarkerInfoWindowShown] to check if the Info Window is showing.
   Future<void> hideMarkerInfoWindow(MarkerId markerId) {
     if (Platform.isAndroid) {
-      return googleController!
-          .hideMarkerInfoWindow(markerId.googleMapsMarkerId);
+      return googleController!.hideMarkerInfoWindow(markerId.googleMapsMarkerId);
     } else if (Platform.isIOS) {
-      return appleController!
-          .hideMarkerInfoWindow(markerId.appleMapsAnnoationId);
+      return appleController!.hideMarkerInfoWindow(markerId.appleMapsAnnotationId);
     }
     throw ('Platform not supported.');
   }
@@ -60,12 +56,9 @@ class PlatformMapController {
   ///   * [hideMarkerInfoWindow] to hide the Info Window.
   Future<bool> isMarkerInfoWindowShown(MarkerId markerId) async {
     if (Platform.isAndroid) {
-      return googleController!
-          .isMarkerInfoWindowShown(markerId.googleMapsMarkerId);
+      return googleController!.isMarkerInfoWindowShown(markerId.googleMapsMarkerId);
     } else if (Platform.isIOS) {
-      return await appleController!
-              .isMarkerInfoWindowShown(markerId.appleMapsAnnoationId) ??
-          false;
+      return await appleController!.isMarkerInfoWindowShown(markerId.appleMapsAnnotationId) ?? false;
     }
     throw ('Platform not supported.');
   }
@@ -99,12 +92,10 @@ class PlatformMapController {
   Future<LatLngBounds> getVisibleRegion() async {
     late LatLngBounds _bounds;
     if (Platform.isIOS) {
-      appleMaps.LatLngBounds appleBounds =
-          await this.appleController!.getVisibleRegion();
+      appleMaps.LatLngBounds appleBounds = await this.appleController!.getVisibleRegion();
       _bounds = LatLngBounds._fromAppleLatLngBounds(appleBounds);
     } else if (Platform.isAndroid) {
-      googleMaps.LatLngBounds googleBounds =
-          await this.googleController!.getVisibleRegion();
+      googleMaps.LatLngBounds googleBounds = await this.googleController!.getVisibleRegion();
       _bounds = LatLngBounds._fromGoogleLatLngBounds(googleBounds);
     }
     return _bounds;

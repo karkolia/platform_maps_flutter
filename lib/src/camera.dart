@@ -55,8 +55,16 @@ class CameraPosition {
     );
   }
 
-  static CameraPosition fromAppleMapCameraPosition(
-      appleMaps.CameraPosition cameraPosition) {
+  huaweiMaps.CameraPosition get huaweiMapsCameraPosition {
+    return huaweiMaps.CameraPosition(
+      target: this.target.huaweiLatLng,
+      bearing: this.bearing,
+      tilt: this.tilt,
+      zoom: this.zoom,
+    );
+  }
+
+  static CameraPosition fromAppleMapCameraPosition(appleMaps.CameraPosition cameraPosition) {
     return CameraPosition(
       target: LatLng._fromAppleLatLng(cameraPosition.target),
       bearing: cameraPosition.heading,
@@ -65,8 +73,7 @@ class CameraPosition {
     );
   }
 
-  static CameraPosition fromGoogleMapCameraPosition(
-      googleMaps.CameraPosition cameraPosition) {
+  static CameraPosition fromGoogleMapCameraPosition(googleMaps.CameraPosition cameraPosition) {
     return CameraPosition(
       target: LatLng._fromGoogleLatLng(cameraPosition.target),
       bearing: cameraPosition.bearing,
@@ -82,11 +89,9 @@ class CameraUpdate {
   /// Returns a camera update that moves the camera to the specified position.
   static newCameraPosition(CameraPosition cameraPosition) {
     if (Platform.isIOS) {
-      return appleMaps.CameraUpdate.newCameraPosition(
-          cameraPosition.appleMapsCameraPosition);
+      return appleMaps.CameraUpdate.newCameraPosition(cameraPosition.appleMapsCameraPosition);
     } else if (Platform.isAndroid) {
-      return googleMaps.CameraUpdate.newCameraPosition(
-          cameraPosition.googleMapsCameraPosition);
+      return googleMaps.CameraUpdate.newCameraPosition(cameraPosition.googleMapsCameraPosition);
     }
   }
 
@@ -115,11 +120,9 @@ class CameraUpdate {
   /// The camera's new tilt and bearing will both be 0.0.
   static newLatLngBounds(LatLngBounds bounds, double padding) {
     if (Platform.isIOS) {
-      return appleMaps.CameraUpdate.newLatLngBounds(
-          bounds.appleLatLngBounds, padding);
+      return appleMaps.CameraUpdate.newLatLngBounds(bounds.appleLatLngBounds, padding);
     } else if (Platform.isAndroid) {
-      return googleMaps.CameraUpdate.newLatLngBounds(
-          bounds.googleLatLngBounds, padding);
+      return googleMaps.CameraUpdate.newLatLngBounds(bounds.googleLatLngBounds, padding);
     }
   }
 

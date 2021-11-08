@@ -23,14 +23,22 @@ class PatternItem {
     return PatternItem._(<dynamic>['gap', length]);
   }
 
-  static googleMaps.PatternItem _googleMapsPatternItem(
-      PatternItem patternItem) {
+  static googleMaps.PatternItem _googleMapsPatternItem(PatternItem patternItem) {
     if (patternItem._json[0] == 'dash') {
       return googleMaps.PatternItem.dash(patternItem._json[1]);
     } else if (patternItem._json[0] == 'gap') {
       return googleMaps.PatternItem.gap(patternItem._json[1]);
     }
     return googleMaps.PatternItem.dot;
+  }
+
+  static huaweiMaps.PatternItem _huaweiMapsPatternItem(PatternItem patternItem) {
+    if (patternItem._json[0] == 'dash') {
+      return huaweiMaps.PatternItem.dash(patternItem._json[1]);
+    } else if (patternItem._json[0] == 'gap') {
+      return huaweiMaps.PatternItem.gap(patternItem._json[1]);
+    }
+    return huaweiMaps.PatternItem.dot;
   }
 
   static appleMaps.PatternItem _appleMapsPatternItem(PatternItem patternItem) {
@@ -44,8 +52,7 @@ class PatternItem {
 
   final dynamic _json;
 
-  static List<googleMaps.PatternItem> getGoogleMapsPatternItemList(
-      List<PatternItem> patternItems) {
+  static List<googleMaps.PatternItem> getGoogleMapsPatternItemList(List<PatternItem> patternItems) {
     List<googleMaps.PatternItem> googleMapsPatternItems = [];
     patternItems.forEach((PatternItem patternItem) {
       googleMapsPatternItems.add(
@@ -55,8 +62,17 @@ class PatternItem {
     return googleMapsPatternItems;
   }
 
-  static List<appleMaps.PatternItem> getAppleMapsPatternItemList(
-      List<PatternItem> patternItems) {
+  static List<huaweiMaps.PatternItem> getHuaweiMapsPatternItemList(List<PatternItem> patternItems) {
+    List<huaweiMaps.PatternItem> huaweiMapsPatternItems = [];
+    patternItems.forEach((PatternItem patternItem) {
+      huaweiMapsPatternItems.add(
+        _huaweiMapsPatternItem(patternItem),
+      );
+    });
+    return huaweiMapsPatternItems;
+  }
+
+  static List<appleMaps.PatternItem> getAppleMapsPatternItemList(List<PatternItem> patternItems) {
     List<appleMaps.PatternItem> appleMapsPatternItems = [];
     patternItems.forEach((PatternItem patternItem) {
       appleMapsPatternItems.add(

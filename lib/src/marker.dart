@@ -42,6 +42,13 @@ class InfoWindow {
         title: this.title,
       );
 
+  huaweiMaps.InfoWindow get huaweiMapsInfoWindow => huaweiMaps.InfoWindow(
+        anchor: this.anchor ?? Offset(0, 0),
+        onClick: this.onTap,
+        snippet: this.snippet,
+        title: this.title,
+      );
+
   /// Creates a new [InfoWindow] object whose values are the same as this instance,
   /// unless overwritten by the specified parameters.
   InfoWindow copyWith({
@@ -69,11 +76,15 @@ class MarkerId {
   /// value of the [MarkerId].
   final String value;
 
-  appleMaps.AnnotationId get appleMapsAnnoationId => appleMaps.AnnotationId(
+  appleMaps.AnnotationId get appleMapsAnnotationId => appleMaps.AnnotationId(
         this.value,
       );
 
   googleMaps.MarkerId get googleMapsMarkerId => googleMaps.MarkerId(
+        this.value,
+      );
+
+  huaweiMaps.MarkerId get huaweiMapsMarkerId => huaweiMaps.MarkerId(
         this.value,
       );
 }
@@ -147,17 +158,15 @@ class Marker {
   final ValueChanged<LatLng>? onDragEnd;
 
   appleMaps.Annotation get appleMapsAnnotation => appleMaps.Annotation(
-        annotationId: this.markerId.appleMapsAnnoationId,
+        annotationId: this.markerId.appleMapsAnnotationId,
         alpha: this.alpha,
         draggable: this.draggable,
         infoWindow: this.infoWindow.appleMapsInfoWindow,
         onTap: this.onTap,
-        icon: this.icon?.bitmapDescriptor ??
-            BitmapDescriptor.defaultMarker?.bitmapDescriptor,
+        icon: this.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
         visible: this.visible,
         onDragEnd: this.onDragEnd != null
-            ? (appleMaps.LatLng latLng) =>
-                _onAppleAnnotationDragEnd(latLng, this.onDragEnd)
+            ? (appleMaps.LatLng latLng) => _onAppleAnnotationDragEnd(latLng, this.onDragEnd)
             : null,
         position: this.position.appleLatLng,
       );
@@ -168,54 +177,60 @@ class Marker {
         draggable: this.draggable,
         infoWindow: this.infoWindow.googleMapsInfoWindow,
         onTap: this.onTap,
-        icon: this.icon?.bitmapDescriptor ??
-            BitmapDescriptor.defaultMarker?.bitmapDescriptor,
+        icon: this.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
         visible: this.visible,
         onDragEnd: this.onDragEnd != null
-            ? (googleMaps.LatLng latLng) =>
-                _onGoogleMarkerDragEnd(latLng, this.onDragEnd)
+            ? (googleMaps.LatLng latLng) => _onGoogleMarkerDragEnd(latLng, this.onDragEnd)
             : null,
         position: this.position.googleLatLng,
       );
 
-  static appleMaps.Annotation appleMapsAnnotationFromMarker(Marker marker) =>
-      appleMaps.Annotation(
-        annotationId: marker.markerId.appleMapsAnnoationId,
+  static appleMaps.Annotation appleMapsAnnotationFromMarker(Marker marker) => appleMaps.Annotation(
+        annotationId: marker.markerId.appleMapsAnnotationId,
         alpha: marker.alpha,
         anchor: Offset(0.5, 1.0),
         draggable: marker.draggable,
         infoWindow: marker.infoWindow.appleMapsInfoWindow,
         onTap: marker.onTap,
-        icon: marker.icon?.bitmapDescriptor ??
-            BitmapDescriptor.defaultMarker?.bitmapDescriptor,
+        icon: marker.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
         visible: marker.visible,
         onDragEnd: marker.onDragEnd != null
-            ? (appleMaps.LatLng latLng) =>
-                _onAppleAnnotationDragEnd(latLng, marker.onDragEnd)
+            ? (appleMaps.LatLng latLng) => _onAppleAnnotationDragEnd(latLng, marker.onDragEnd)
             : null,
         position: marker.position.appleLatLng,
       );
 
-  static googleMaps.Marker googleMapsMarkerFromMarker(Marker marker) =>
-      googleMaps.Marker(
+  static googleMaps.Marker googleMapsMarkerFromMarker(Marker marker) => googleMaps.Marker(
         markerId: marker.markerId.googleMapsMarkerId,
         alpha: marker.alpha,
         anchor: Offset(0.5, 1.0),
         draggable: marker.draggable,
         infoWindow: marker.infoWindow.googleMapsInfoWindow,
         onTap: marker.onTap,
-        icon: marker.icon?.bitmapDescriptor ??
-            BitmapDescriptor.defaultMarker?.bitmapDescriptor,
+        icon: marker.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
         visible: marker.visible,
         onDragEnd: marker.onDragEnd != null
-            ? (googleMaps.LatLng latLng) =>
-                _onGoogleMarkerDragEnd(latLng, marker.onDragEnd)
+            ? (googleMaps.LatLng latLng) => _onGoogleMarkerDragEnd(latLng, marker.onDragEnd)
             : null,
         position: marker.position.googleLatLng,
       );
 
-  static Set<appleMaps.Annotation> toAppleMapsAnnotationSet(
-      Set<Marker> markers) {
+  static huaweiMaps.Marker huaweiMapsMarkerFromMarker(Marker marker) => huaweiMaps.Marker(
+        markerId: marker.markerId.huaweiMapsMarkerId,
+        alpha: marker.alpha,
+        anchor: Offset(0.5, 1.0),
+        draggable: marker.draggable,
+        infoWindow: marker.infoWindow.huaweiMapsInfoWindow,
+        onClick: marker.onTap,
+        icon: marker.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
+        visible: marker.visible,
+        onDragEnd: marker.onDragEnd != null
+            ? (huaweiMaps.LatLng latLng) => _onHuaweiMarkerDragEnd(latLng, marker.onDragEnd)
+            : null,
+        position: marker.position.huaweiLatLng,
+      );
+
+  static Set<appleMaps.Annotation> toAppleMapsAnnotationSet(Set<Marker> markers) {
     List<appleMaps.Annotation> _annotations = <appleMaps.Annotation>[];
     for (Marker marker in markers) {
       _annotations.add(appleMapsAnnotationFromMarker(marker));
@@ -227,6 +242,14 @@ class Marker {
     List<googleMaps.Marker> _markers = <googleMaps.Marker>[];
     for (Marker marker in markers) {
       _markers.add(googleMapsMarkerFromMarker(marker));
+    }
+    return Set.from(_markers);
+  }
+
+  static Set<huaweiMaps.Marker> toHuaweiMapsMarkerSet(Set<Marker> markers) {
+    List<huaweiMaps.Marker> _markers = <huaweiMaps.Marker>[];
+    for (Marker marker in markers) {
+      _markers.add(huaweiMapsMarkerFromMarker(marker));
     }
     return Set.from(_markers);
   }
@@ -258,8 +281,11 @@ class Marker {
     onDragEnd?.call(LatLng._fromGoogleLatLng(latLng));
   }
 
-  static _onAppleAnnotationDragEnd(
-      appleMaps.LatLng latLng, Function? onDragEnd) {
+  static _onHuaweiMarkerDragEnd(huaweiMaps.LatLng latLng, Function? onDragEnd) {
+    onDragEnd?.call(LatLng._fromHuaweiLatLng(latLng));
+  }
+
+  static _onAppleAnnotationDragEnd(appleMaps.LatLng latLng, Function? onDragEnd) {
     onDragEnd?.call(LatLng._fromAppleLatLng(latLng));
   }
 }

@@ -18,6 +18,12 @@ class JointType {
     googleMaps.JointType.round,
   ];
 
+  static const List<huaweiMaps.JointType> huaweiMapsJointTypes = const [
+    huaweiMaps.JointType.mitered,
+    huaweiMaps.JointType.bevel,
+    huaweiMaps.JointType.round,
+  ];
+
   static const List<appleMaps.JointType> appleMapsJointTypes = const [
     appleMaps.JointType.mitered,
     appleMaps.JointType.bevel,
@@ -41,6 +47,10 @@ class JointType {
 
   static googleMaps.JointType getGoogleMapsJointType(JointType jointType) {
     return googleMapsJointTypes[jointType.value];
+  }
+
+  static huaweiMaps.JointType getHuaweiMapsJointType(JointType jointType) {
+    return huaweiMapsJointTypes[jointType.value];
   }
 
   static appleMaps.JointType getAppleMapsJointType(JointType jointType) {

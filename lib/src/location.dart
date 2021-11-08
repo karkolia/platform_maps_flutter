@@ -10,8 +10,7 @@ class LatLng {
   /// The longitude is normalized to the half-open interval from -180.0
   /// (inclusive) to +180.0 (exclusive)
   const LatLng(double latitude, double longitude)
-      : latitude =
-            (latitude < -90.0 ? -90.0 : (90.0 < latitude ? 90.0 : latitude)),
+      : latitude = (latitude < -90.0 ? -90.0 : (90.0 < latitude ? 90.0 : latitude)),
         longitude = (longitude + 180.0) % 360.0 - 180.0;
 
   /// The latitude in degrees between -90.0 and 90.0, both inclusive.
@@ -23,11 +22,11 @@ class LatLng {
   @override
   String toString() => '$runtimeType($latitude, $longitude)';
 
-  static LatLng _fromAppleLatLng(appleMaps.LatLng latLng) =>
-      LatLng(latLng.latitude, latLng.longitude);
+  static LatLng _fromAppleLatLng(appleMaps.LatLng latLng) => LatLng(latLng.latitude, latLng.longitude);
 
-  static LatLng _fromGoogleLatLng(googleMaps.LatLng latLng) =>
-      LatLng(latLng.latitude, latLng.longitude);
+  static LatLng _fromGoogleLatLng(googleMaps.LatLng latLng) => LatLng(latLng.latitude, latLng.longitude);
+
+  static LatLng _fromHuaweiLatLng(huaweiMaps.LatLng latLng) => LatLng(latLng.lat, latLng.lng);
 
   appleMaps.LatLng get appleLatLng => appleMaps.LatLng(
         this.latitude,
@@ -39,13 +38,25 @@ class LatLng {
         this.longitude,
       );
 
-  static List<googleMaps.LatLng> googleMapsLatLngsFromList(
-      List<LatLng> latlngs) {
+  huaweiMaps.LatLng get huaweiLatLng => huaweiMaps.LatLng(
+        this.latitude,
+        this.longitude,
+      );
+
+  static List<googleMaps.LatLng> googleMapsLatLngsFromList(List<LatLng> latlngs) {
     List<googleMaps.LatLng> googleMapsLatLngs = [];
     latlngs.forEach((LatLng latlng) {
       googleMapsLatLngs.add(latlng.googleLatLng);
     });
     return googleMapsLatLngs;
+  }
+
+  static List<huaweiMaps.LatLng> huaweiMapsLatLngsFromList(List<LatLng> latlngs) {
+    List<huaweiMaps.LatLng> huaweiMapsLatLngs = [];
+    latlngs.forEach((LatLng latlng) {
+      huaweiMapsLatLngs.add(latlng.huaweiLatLng);
+    });
+    return huaweiMapsLatLngs;
   }
 
   static List<appleMaps.LatLng> appleMapsLatLngsFromList(List<LatLng> latlngs) {
@@ -62,17 +73,14 @@ class LatLngBounds {
   ///
   /// The latitude of the southwest corner cannot be larger than the
   /// latitude of the northeast corner.
-  LatLngBounds({required this.southwest, required this.northeast})
-      : assert(southwest.latitude <= northeast.latitude);
+  LatLngBounds({required this.southwest, required this.northeast}) : assert(southwest.latitude <= northeast.latitude);
 
-  static LatLngBounds _fromAppleLatLngBounds(appleMaps.LatLngBounds bounds) =>
-      LatLngBounds(
+  static LatLngBounds _fromAppleLatLngBounds(appleMaps.LatLngBounds bounds) => LatLngBounds(
         southwest: LatLng._fromAppleLatLng(bounds.southwest),
         northeast: LatLng._fromAppleLatLng(bounds.northeast),
       );
 
-  static LatLngBounds _fromGoogleLatLngBounds(googleMaps.LatLngBounds bounds) =>
-      LatLngBounds(
+  static LatLngBounds _fromGoogleLatLngBounds(googleMaps.LatLngBounds bounds) => LatLngBounds(
         southwest: LatLng._fromGoogleLatLng(bounds.southwest),
         northeast: LatLng._fromGoogleLatLng(bounds.northeast),
       );
@@ -94,8 +102,7 @@ class LatLngBounds {
       );
 
   bool contains(LatLng point) {
-    return _containsLatitude(point.latitude) &&
-        _containsLongitude(point.longitude);
+    return _containsLatitude(point.latitude) && _containsLongitude(point.longitude);
   }
 
   bool _containsLatitude(double lat) {

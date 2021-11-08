@@ -133,6 +133,14 @@ class Circle {
     return Set.from(_circles);
   }
 
+  static Set<huaweiMaps.Circle> toHuaweiMapsCircleSet(Set<Circle> circles) {
+    List<huaweiMaps.Circle> _circles = <huaweiMaps.Circle>[];
+    for (Circle circle in circles) {
+      _circles.add(circle.huaweiMapsCircle);
+    }
+    return Set.from(_circles);
+  }
+
   static Set<appleMaps.Circle> toAppleMapsCircleSet(Set<Circle> circles) {
     List<appleMaps.Circle> _circles = <appleMaps.Circle>[];
     for (Circle circle in circles) {
@@ -147,6 +155,18 @@ class Circle {
         fillColor: this.fillColor,
         onTap: this.onTap,
         center: this.center.googleLatLng,
+        radius: this.radius,
+        strokeColor: this.strokeColor,
+        strokeWidth: this.strokeWidth,
+        visible: this.visible,
+      );
+
+  huaweiMaps.Circle get huaweiMapsCircle => huaweiMaps.Circle(
+        circleId: huaweiMaps.CircleId(this.circleId.value),
+        clickable: this.consumeTapEvents,
+        fillColor: this.fillColor,
+        onClick: this.onTap,
+        center: this.center.huaweiLatLng,
         radius: this.radius,
         strokeColor: this.strokeColor,
         strokeWidth: this.strokeWidth,

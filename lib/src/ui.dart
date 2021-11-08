@@ -37,6 +37,9 @@ class MinMaxZoomPreference {
   googleMaps.MinMaxZoomPreference get googleMapsZoomPreference =>
       googleMaps.MinMaxZoomPreference(this.maxZoom, this.maxZoom);
 
+  huaweiMaps.MinMaxZoomPreference get huaweiMapsZoomPreference =>
+      huaweiMaps.MinMaxZoomPreference(this.maxZoom ?? 1, this.maxZoom ?? 1);
+
   /// Converts this object to something serializable in JSON.
   dynamic toJson() => <dynamic>[minZoom, maxZoom];
 }

@@ -16,6 +16,12 @@ class PolylineId {
     );
   }
 
+  huaweiMaps.PolylineId huaweiMapsPolylineId() {
+    return huaweiMaps.PolylineId(
+      value,
+    );
+  }
+
   appleMaps.PolylineId appleMapsPolylineId() {
     return appleMaps.PolylineId(
       value,
@@ -106,8 +112,7 @@ class Polyline {
   /// Callbacks to receive tap events for polyline placed on this map.
   final VoidCallback? onTap;
 
-  static Set<googleMaps.Polyline> toGoogleMapsPolylines(
-      Set<Polyline> polylines) {
+  static Set<googleMaps.Polyline> toGoogleMapsPolylines(Set<Polyline> polylines) {
     Set<googleMaps.Polyline> googleMapsPolylines = Set();
     polylines.forEach((Polyline polyline) {
       googleMapsPolylines.add(
@@ -127,6 +132,28 @@ class Polyline {
       );
     });
     return googleMapsPolylines;
+  }
+
+  static Set<huaweiMaps.Polyline> toHuaweiMapsPolylines(Set<Polyline> polylines) {
+    Set<huaweiMaps.Polyline> huaweiMapsPolylines = Set();
+    polylines.forEach((Polyline polyline) {
+      huaweiMapsPolylines.add(
+        huaweiMaps.Polyline(
+          polylineId: polyline.polylineId.huaweiMapsPolylineId(),
+          color: polyline.color,
+          clickable: polyline.consumeTapEvents,
+          endCap: _Cap.huaweiPolylineCap(polyline.polylineCap),
+          jointType: JointType.getHuaweiMapsJointType(polyline.jointType),
+          onClick: polyline.onTap,
+          patterns: PatternItem.getHuaweiMapsPatternItemList(polyline.patterns),
+          points: LatLng.huaweiMapsLatLngsFromList(polyline.points),
+          startCap: _Cap.huaweiPolylineCap(polyline.polylineCap),
+          visible: polyline.visible,
+          width: polyline.width,
+        ),
+      );
+    });
+    return huaweiMapsPolylines;
   }
 
   static Set<appleMaps.Polyline> toAppleMapsPolylines(Set<Polyline> polylines) {

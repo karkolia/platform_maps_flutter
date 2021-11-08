@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMaps;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:huawei_map/map.dart' as huaweiMaps;
+import 'package:platform_maps_flutter/src/map_selection_helper.dart';
 
 part 'src/bitmap.dart';
 part 'src/camera.dart';
