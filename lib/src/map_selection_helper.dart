@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 class MapSelectionHelper {
@@ -8,12 +6,6 @@ class MapSelectionHelper {
   }
 
   Set<Map> getAvailableMaps() {
-    return <Map>{Map.appleMapKit, Map.googleMaps};
+    return <Map>{Map.googleMaps, Map.huaweiMaps};
   }
-
-  bool hasAppleMapKit() => Platform.isIOS;
-
-  bool hasGoogleMaps() => Platform.isAndroid;
-
-  bool hasHuaweiMaps() => Platform.isAndroid;
 }

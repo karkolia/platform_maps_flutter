@@ -5,8 +5,11 @@ typedef void MapCreatedCallback(PlatformMapController controller);
 typedef void CameraPositionCallback(CameraPosition position);
 
 enum Map { googleMaps, appleMapKit, huaweiMaps }
+enum OS { android, ios, huawei }
 
 class PlatformMap extends StatefulWidget {
+  static late Map selectedMap;
+
   PlatformMap(
       {Key? key,
       required this.initialCameraPosition,
@@ -170,8 +173,6 @@ class PlatformMap extends StatefulWidget {
   /// were not claimed by any other gesture recognizer.
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
-  late final Map selectedMap;
-
   @override
   _PlatformMapState createState() => _PlatformMapState();
 }
@@ -179,7 +180,7 @@ class PlatformMap extends StatefulWidget {
 class _PlatformMapState extends State<PlatformMap> {
   @override
   Widget build(BuildContext context) {
-    switch (widget.selectedMap) {
+    switch (PlatformMap.selectedMap) {
       case Map.googleMaps:
         return googleMaps.GoogleMap(
           initialCameraPosition: widget.initialCameraPosition.googleMapsCameraPosition,
@@ -209,30 +210,31 @@ class _PlatformMapState extends State<PlatformMap> {
         );
       case Map.huaweiMaps:
         return huaweiMaps.HuaweiMap(
-            initialCameraPosition: widget.initialCameraPosition.huaweiMapsCameraPosition,
-            compassEnabled: widget.compassEnabled,
-            mapType: _getHuaweiMapType(),
-            padding: widget.padding,
-            markers: Marker.toHuaweiMapsMarkerSet(widget.markers),
-            polylines: Polyline.toHuaweiMapsPolylines(widget.polylines),
-            polygons: Polygon.toHuaweiMapsPolygonSet(widget.polygons),
-            circles: Circle.toHuaweiMapsCircleSet(widget.circles),
-            gestureRecognizers: widget.gestureRecognizers,
-            onCameraIdle: widget.onCameraIdle,
-            myLocationButtonEnabled: widget.myLocationButtonEnabled,
-            myLocationEnabled: widget.myLocationEnabled,
-            onCameraMoveStarted: widget.onCameraMoveStarted != null ? (int) => widget.onCameraMoveStarted!() : null,
-            tiltGesturesEnabled: widget.tiltGesturesEnabled,
-            rotateGesturesEnabled: widget.rotateGesturesEnabled,
-            zoomControlsEnabled: widget.zoomControlsEnabled,
-            zoomGesturesEnabled: widget.zoomGesturesEnabled,
-            scrollGesturesEnabled: widget.scrollGesturesEnabled,
-            onMapCreated: _onMapCreated,
-            onCameraMove: _onCameraMove,
-            onClick: _onTap,
-            onLongPress: _onLongPress,
-            trafficEnabled: widget.trafficEnabled,
-            minMaxZoomPreference: widget.minMaxZoomPreference.huaweiMapsZoomPreference);
+          initialCameraPosition: widget.initialCameraPosition.huaweiMapsCameraPosition,
+          compassEnabled: widget.compassEnabled,
+          mapType: _getHuaweiMapType(),
+          padding: widget.padding,
+          markers: Marker.toHuaweiMapsMarkerSet(widget.markers),
+          polylines: Polyline.toHuaweiMapsPolylines(widget.polylines),
+          polygons: Polygon.toHuaweiMapsPolygonSet(widget.polygons),
+          circles: Circle.toHuaweiMapsCircleSet(widget.circles),
+          gestureRecognizers: widget.gestureRecognizers,
+          onCameraIdle: widget.onCameraIdle,
+          myLocationButtonEnabled: widget.myLocationButtonEnabled,
+          myLocationEnabled: widget.myLocationEnabled,
+          onCameraMoveStarted: widget.onCameraMoveStarted != null ? (int) => widget.onCameraMoveStarted!() : null,
+          tiltGesturesEnabled: widget.tiltGesturesEnabled,
+          rotateGesturesEnabled: widget.rotateGesturesEnabled,
+          zoomControlsEnabled: widget.zoomControlsEnabled,
+          zoomGesturesEnabled: widget.zoomGesturesEnabled,
+          scrollGesturesEnabled: widget.scrollGesturesEnabled,
+          onMapCreated: _onMapCreated,
+          onCameraMove: _onCameraMove,
+          onClick: _onTap,
+          onLongPress: _onLongPress,
+          trafficEnabled: widget.trafficEnabled,
+          minMaxZoomPreference: widget.minMaxZoomPreference.huaweiMapsZoomPreference
+        );
       case Map.appleMapKit:
         return appleMaps.AppleMap(
           initialCameraPosition: widget.initialCameraPosition.appleMapsCameraPosition,

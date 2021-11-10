@@ -85,6 +85,11 @@ class LatLngBounds {
         northeast: LatLng._fromGoogleLatLng(bounds.northeast),
       );
 
+  static LatLngBounds _fromHuaweiLatLngBounds(huaweiMaps.LatLngBounds bounds) => LatLngBounds(
+        southwest: LatLng._fromHuaweiLatLng(bounds.southwest),
+        northeast: LatLng._fromHuaweiLatLng(bounds.northeast),
+      );
+
   /// The southwest corner of the rectangle.
   final LatLng southwest;
 
@@ -99,6 +104,11 @@ class LatLngBounds {
   googleMaps.LatLngBounds get googleLatLngBounds => googleMaps.LatLngBounds(
         southwest: this.southwest.googleLatLng,
         northeast: this.northeast.googleLatLng,
+      );
+
+  huaweiMaps.LatLngBounds get huaweiLatLngBounds => huaweiMaps.LatLngBounds(
+        southwest: this.southwest.huaweiLatLng,
+        northeast: this.northeast.huaweiLatLng,
       );
 
   bool contains(LatLng point) {

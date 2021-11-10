@@ -11,12 +11,16 @@ class BitmapDescriptor {
 
   /// Creates a BitmapDescriptor that refers to the default marker image.
   static BitmapDescriptor? get defaultMarker {
-    if (Platform.isIOS) {
-      return BitmapDescriptor._(appleMaps.BitmapDescriptor.defaultAnnotation);
-    } else if (Platform.isAndroid) {
-      return BitmapDescriptor._(googleMaps.BitmapDescriptor.defaultMarker);
+    switch (PlatformMap.selectedMap) {
+      case Map.appleMapKit:
+        return BitmapDescriptor._(appleMaps.BitmapDescriptor.defaultAnnotation);
+      case Map.googleMaps:
+        return BitmapDescriptor._(googleMaps.BitmapDescriptor.defaultMarker);
+      case Map.huaweiMaps:
+        return BitmapDescriptor._(huaweiMaps.BitmapDescriptor.defaultMarker);
+      default:
+        return null;
     }
-    return null;
   }
 
   /// Creates a [BitmapDescriptor] from an asset image.
@@ -32,20 +36,32 @@ class BitmapDescriptor {
     String? package,
   }) async {
     dynamic bitmap;
-    if (Platform.isIOS) {
-      bitmap = await appleMaps.BitmapDescriptor.fromAssetImage(
-        configuration,
-        assetName,
-        bundle: bundle,
-        package: package,
-      );
-    } else if (Platform.isAndroid) {
-      bitmap = await googleMaps.BitmapDescriptor.fromAssetImage(
-        configuration,
-        assetName,
-        bundle: bundle,
-        package: package,
-      );
+
+    switch (PlatformMap.selectedMap) {
+      case Map.appleMapKit:
+        bitmap = await appleMaps.BitmapDescriptor.fromAssetImage(
+          configuration,
+          assetName,
+          bundle: bundle,
+          package: package,
+        );
+        break;
+      case Map.googleMaps:
+        bitmap = await googleMaps.BitmapDescriptor.fromAssetImage(
+          configuration,
+          assetName,
+          bundle: bundle,
+          package: package,
+        );
+        break;
+      case Map.huaweiMaps:
+        bitmap = await huaweiMaps.BitmapDescriptor.fromAssetImage(
+          configuration,
+          assetName,
+          bundle: bundle,
+          package: package,
+        );
+        break;
     }
     return BitmapDescriptor._(bitmap);
   }
@@ -53,9 +69,18 @@ class BitmapDescriptor {
   /// Creates a BitmapDescriptor using an array of bytes that must be encoded
   /// as PNG.
   static BitmapDescriptor fromBytes(Uint8List byteData) {
-    var bitmap = Platform.isAndroid
-        ? googleMaps.BitmapDescriptor.fromBytes(byteData)
-        : appleMaps.BitmapDescriptor.fromBytes(byteData);
+    late var bitmap;
+    switch (PlatformMap.selectedMap) {
+      case Map.appleMapKit:
+        bitmap = appleMaps.BitmapDescriptor.fromBytes(byteData);
+        break;
+      case Map.googleMaps:
+        bitmap = googleMaps.BitmapDescriptor.fromBytes(byteData);
+        break;
+      case Map.huaweiMaps:
+        bitmap = huaweiMaps.BitmapDescriptor.fromBytes(byteData);
+        break;
+    }
     return BitmapDescriptor._(bitmap);
   }
 }
