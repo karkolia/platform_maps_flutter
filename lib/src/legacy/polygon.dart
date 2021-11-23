@@ -125,14 +125,6 @@ class Polygon {
   @override
   int get hashCode => polygonId.hashCode;
 
-  static Set<googleMaps.Polygon> toGoogleMapsPolygonSet(Set<Polygon> polygons) {
-    List<googleMaps.Polygon> _polygons = <googleMaps.Polygon>[];
-    for (Polygon polygon in polygons) {
-      _polygons.add(polygon.googleMapsPolygon);
-    }
-    return Set.from(_polygons);
-  }
-
   static Set<huaweiMaps.Polygon> toHuaweiMapsPolygonSet(Set<Polygon> polygons) {
     List<huaweiMaps.Polygon> _polygons = <huaweiMaps.Polygon>[];
     for (Polygon polygon in polygons) {
@@ -148,17 +140,6 @@ class Polygon {
     }
     return Set.from(_polygons);
   }
-
-  googleMaps.Polygon get googleMapsPolygon => googleMaps.Polygon(
-        polygonId: googleMaps.PolygonId(this.polygonId.value),
-        consumeTapEvents: this.consumeTapEvents,
-        fillColor: this.fillColor,
-        onTap: this.onTap,
-        points: LatLng.googleMapsLatLngsFromList(this.points),
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        visible: this.visible,
-      );
 
   huaweiMaps.Polygon get huaweiMapsPolygon => huaweiMaps.Polygon(
         polygonId: huaweiMaps.PolygonId(this.polygonId.value),

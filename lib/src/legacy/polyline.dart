@@ -112,28 +112,6 @@ class Polyline {
   /// Callbacks to receive tap events for polyline placed on this map.
   final VoidCallback? onTap;
 
-  static Set<googleMaps.Polyline> toGoogleMapsPolylines(Set<Polyline> polylines) {
-    Set<googleMaps.Polyline> googleMapsPolylines = Set();
-    polylines.forEach((Polyline polyline) {
-      googleMapsPolylines.add(
-        googleMaps.Polyline(
-          polylineId: polyline.polylineId.googleMapsPolylineId(),
-          color: polyline.color,
-          consumeTapEvents: polyline.consumeTapEvents,
-          endCap: _Cap.googlePolylineCap(polyline.polylineCap),
-          jointType: JointType.getGoogleMapsJointType(polyline.jointType),
-          onTap: polyline.onTap,
-          patterns: PatternItem.getGoogleMapsPatternItemList(polyline.patterns),
-          points: LatLng.googleMapsLatLngsFromList(polyline.points),
-          startCap: _Cap.googlePolylineCap(polyline.polylineCap),
-          visible: polyline.visible,
-          width: polyline.width,
-        ),
-      );
-    });
-    return googleMapsPolylines;
-  }
-
   static Set<huaweiMaps.Polyline> toHuaweiMapsPolylines(Set<Polyline> polylines) {
     Set<huaweiMaps.Polyline> huaweiMapsPolylines = Set();
     polylines.forEach((Polyline polyline) {

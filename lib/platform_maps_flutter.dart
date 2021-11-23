@@ -12,18 +12,34 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMaps;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:huawei_map/map.dart' as huaweiMaps;
-import 'package:platform_maps_flutter/src/map_selection_helper.dart';
+import 'package:platform_maps_flutter/src/google_maps/google_map_wrapper.dart';
+import 'package:platform_maps_flutter/src/legacy/map_selection_helper.dart';
+import 'package:platform_maps_flutter/src/platform_map_wrapper.dart';
 
-part 'src/bitmap.dart';
-part 'src/camera.dart';
-part 'src/cap.dart';
-part 'src/circle.dart';
-part 'src/controller.dart';
-part 'src/joint_type.dart';
-part 'src/location.dart';
-part 'src/marker.dart';
-part 'src/pattern_item.dart';
-part 'src/platform_maps.dart';
-part 'src/polygon.dart';
-part 'src/polyline.dart';
-part 'src/ui.dart';
+part 'src/legacy/bitmap.dart';
+
+part 'src/legacy/camera.dart';
+
+part 'src/legacy/cap.dart';
+
+part 'src/legacy/circle.dart';
+
+part 'src/legacy/controller.dart';
+
+part 'src/legacy/joint_type.dart';
+
+part 'src/legacy/location.dart';
+
+part 'src/legacy/marker.dart';
+
+part 'src/legacy/pattern_item.dart';
+
+part 'src/legacy/polygon.dart';
+
+part 'src/legacy/polyline.dart';
+
+part 'src/legacy/ui.dart';
+
+part 'src/platform_map.dart';
+
+enum Map { googleMaps, appleMapKit, huaweiMaps }

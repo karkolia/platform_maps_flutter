@@ -34,9 +34,6 @@ class MinMaxZoomPreference {
   appleMaps.MinMaxZoomPreference get appleMapsZoomPreference =>
       appleMaps.MinMaxZoomPreference(this.minZoom, this.maxZoom);
 
-  googleMaps.MinMaxZoomPreference get googleMapsZoomPreference =>
-      googleMaps.MinMaxZoomPreference(this.minZoom, this.maxZoom);
-
   huaweiMaps.MinMaxZoomPreference get huaweiMapsZoomPreference => this.minZoom == null || this.maxZoom == null
       ? huaweiMaps.MinMaxZoomPreference.unbounded
       : huaweiMaps.MinMaxZoomPreference(this.minZoom!, this.maxZoom!);

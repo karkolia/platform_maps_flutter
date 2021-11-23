@@ -46,15 +46,6 @@ class CameraPosition {
     );
   }
 
-  googleMaps.CameraPosition get googleMapsCameraPosition {
-    return googleMaps.CameraPosition(
-      target: this.target.googleLatLng,
-      bearing: this.bearing,
-      tilt: this.tilt,
-      zoom: this.zoom,
-    );
-  }
-
   huaweiMaps.CameraPosition get huaweiMapsCameraPosition {
     return huaweiMaps.CameraPosition(
       target: this.target.huaweiLatLng,
@@ -69,15 +60,6 @@ class CameraPosition {
       target: LatLng._fromAppleLatLng(cameraPosition.target),
       bearing: cameraPosition.heading,
       tilt: cameraPosition.pitch,
-      zoom: cameraPosition.zoom,
-    );
-  }
-
-  static CameraPosition fromGoogleMapCameraPosition(googleMaps.CameraPosition cameraPosition) {
-    return CameraPosition(
-      target: LatLng._fromGoogleLatLng(cameraPosition.target),
-      bearing: cameraPosition.bearing,
-      tilt: cameraPosition.tilt,
       zoom: cameraPosition.zoom,
     );
   }

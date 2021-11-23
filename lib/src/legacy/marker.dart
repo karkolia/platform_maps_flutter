@@ -35,13 +35,6 @@ class InfoWindow {
         title: this.title,
       );
 
-  googleMaps.InfoWindow get googleMapsInfoWindow => googleMaps.InfoWindow(
-        anchor: this.anchor ?? Offset(0, 0),
-        onTap: this.onTap,
-        snippet: this.snippet,
-        title: this.title,
-      );
-
   huaweiMaps.InfoWindow get huaweiMapsInfoWindow => huaweiMaps.InfoWindow(
         anchor: this.anchor ?? Offset(0, 0),
         onClick: this.onTap,
@@ -77,10 +70,6 @@ class MarkerId {
   final String value;
 
   appleMaps.AnnotationId get appleMapsAnnotationId => appleMaps.AnnotationId(
-        this.value,
-      );
-
-  googleMaps.MarkerId get googleMapsMarkerId => googleMaps.MarkerId(
         this.value,
       );
 
@@ -200,21 +189,6 @@ class Marker {
         position: marker.position.appleLatLng,
       );
 
-  static googleMaps.Marker googleMapsMarkerFromMarker(Marker marker) => googleMaps.Marker(
-        markerId: marker.markerId.googleMapsMarkerId,
-        alpha: marker.alpha,
-        anchor: Offset(0.5, 1.0),
-        draggable: marker.draggable,
-        infoWindow: marker.infoWindow.googleMapsInfoWindow,
-        onTap: marker.onTap,
-        icon: marker.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
-        visible: marker.visible,
-        onDragEnd: marker.onDragEnd != null
-            ? (googleMaps.LatLng latLng) => _onGoogleMarkerDragEnd(latLng, marker.onDragEnd)
-            : null,
-        position: marker.position.googleLatLng,
-      );
-
   static huaweiMaps.Marker huaweiMapsMarkerFromMarker(Marker marker) => huaweiMaps.Marker(
         markerId: marker.markerId.huaweiMapsMarkerId,
         alpha: marker.alpha,
@@ -236,14 +210,6 @@ class Marker {
       _annotations.add(appleMapsAnnotationFromMarker(marker));
     }
     return Set.from(_annotations);
-  }
-
-  static Set<googleMaps.Marker> toGoogleMapsMarkerSet(Set<Marker> markers) {
-    List<googleMaps.Marker> _markers = <googleMaps.Marker>[];
-    for (Marker marker in markers) {
-      _markers.add(googleMapsMarkerFromMarker(marker));
-    }
-    return Set.from(_markers);
   }
 
   static Set<huaweiMaps.Marker> toHuaweiMapsMarkerSet(Set<Marker> markers) {
@@ -275,10 +241,6 @@ class Marker {
       visible: visibleParam ?? visible,
       onTap: onTapParam ?? onTap,
     );
-  }
-
-  static _onGoogleMarkerDragEnd(googleMaps.LatLng latLng, Function? onDragEnd) {
-    onDragEnd?.call(LatLng._fromGoogleLatLng(latLng));
   }
 
   static _onHuaweiMarkerDragEnd(huaweiMaps.LatLng latLng, Function? onDragEnd) {

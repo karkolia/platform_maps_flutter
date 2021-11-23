@@ -24,16 +24,9 @@ class LatLng {
 
   static LatLng _fromAppleLatLng(appleMaps.LatLng latLng) => LatLng(latLng.latitude, latLng.longitude);
 
-  static LatLng _fromGoogleLatLng(googleMaps.LatLng latLng) => LatLng(latLng.latitude, latLng.longitude);
-
   static LatLng _fromHuaweiLatLng(huaweiMaps.LatLng latLng) => LatLng(latLng.lat, latLng.lng);
 
   appleMaps.LatLng get appleLatLng => appleMaps.LatLng(
-        this.latitude,
-        this.longitude,
-      );
-
-  googleMaps.LatLng get googleLatLng => googleMaps.LatLng(
         this.latitude,
         this.longitude,
       );
@@ -78,11 +71,6 @@ class LatLngBounds {
   static LatLngBounds _fromAppleLatLngBounds(appleMaps.LatLngBounds bounds) => LatLngBounds(
         southwest: LatLng._fromAppleLatLng(bounds.southwest),
         northeast: LatLng._fromAppleLatLng(bounds.northeast),
-      );
-
-  static LatLngBounds _fromGoogleLatLngBounds(googleMaps.LatLngBounds bounds) => LatLngBounds(
-        southwest: LatLng._fromGoogleLatLng(bounds.southwest),
-        northeast: LatLng._fromGoogleLatLng(bounds.northeast),
       );
 
   static LatLngBounds _fromHuaweiLatLngBounds(huaweiMaps.LatLngBounds bounds) => LatLngBounds(
