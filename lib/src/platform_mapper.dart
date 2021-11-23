@@ -1,41 +1,41 @@
 import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
-abstract class PlatformMapper {
-  T fromMapType<T>(MapType mapType);
+abstract class PlatformMapper<T, U, V> {
+  dynamic fromMapType(MapType mapType);
 
-  T fromCameraPosition<T>(CameraPosition cameraPosition);
+  dynamic fromCameraPosition(CameraPosition cameraPosition);
 
-  CameraPosition toCameraPosition<T>(T cameraPosition);
+  CameraPosition toCameraPosition(T cameraPosition);
 
-  LatLng toLatLng<T>(T latLng);
+  LatLng toLatLng(U latLng);
 
-  T fromLatLng<T>(LatLng latLng);
+  dynamic fromLatLng(LatLng latLng);
 
-  T newCameraPosition<T>(CameraPosition cameraPosition);
+  dynamic newCameraPosition(CameraPosition cameraPosition);
 
-  T fromMinMaxZoomPreference<T>(MinMaxZoomPreference minMaxZoomPreference);
+  dynamic fromMinMaxZoomPreference(MinMaxZoomPreference minMaxZoomPreference);
 
-  T fromMarkerSet<T>(Set<Marker> markers);
+  dynamic fromMarkerSet(Set<Marker> markers);
 
-  T fromMarker<T>(Marker marker);
+  dynamic fromMarker(Marker marker);
 
-  T fromMarkerId<T>(MarkerId markerId);
+  dynamic fromMarkerId(MarkerId markerId);
 
-  T fromInfoWindow<T>(InfoWindow infoWindow);
+  dynamic fromInfoWindow(InfoWindow infoWindow);
 
-  T fromPolylineSet<T>(Set<Polyline> polylineSet);
+  dynamic fromPolylineSet(Set<Polyline> polylineSet);
 
-  T fromPolyline<T>(Polyline polyline);
+  dynamic fromPolyline(Polyline polyline);
 
-  T fromCap<T>(Cap cap);
+  dynamic fromCap(Cap cap);
 
-  T fromPolygonSet<T>(Set<Polygon> polygonSet);
+  dynamic fromPolygonSet(Set<Polygon> polygonSet);
 
-  T fromPolygon<T>(Polygon polygon);
+  dynamic fromPolygon(Polygon polygon);
 
-  T fromCircleSet<T>(Set<Circle> circleSet);
+  dynamic fromCircleSet(Set<Circle> circleSet);
 
-  T fromCircle<T>(Circle circle);
+  dynamic fromCircle(Circle circle);
 
-  LatLngBounds toLatLngBounds<T>(T bounds);
+  LatLngBounds toLatLngBounds(V bounds);
 }

@@ -1,6 +1,6 @@
 part of platform_maps_flutter;
 
-typedef void MapCreatedCallback(PlatformMapController controller);
+typedef void MapCreatedCallback(LegacyPlatformMapController controller);
 typedef void CameraPositionCallback(CameraPosition position);
 
 class PlatformMap extends StatefulWidget {
@@ -240,7 +240,7 @@ class _PlatformMapState extends State<PlatformMap> {
   }
 
   void _onMapCreated(dynamic controller) {
-    widget.onMapCreated?.call(PlatformMapController(controller));
+    widget.onMapCreated?.call(LegacyPlatformMapController(controller));
   }
 
   void _onCameraMove(dynamic cameraPosition) {

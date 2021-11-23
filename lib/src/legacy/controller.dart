@@ -1,11 +1,11 @@
 part of platform_maps_flutter;
 
-class PlatformMapController {
+class LegacyPlatformMapController {
   appleMaps.AppleMapController? appleController;
   googleMaps.GoogleMapController? googleController;
   huaweiMaps.HuaweiMapController? huaweiController;
 
-  PlatformMapController(dynamic controller) {
+  LegacyPlatformMapController(dynamic controller) {
     if (controller.runtimeType == googleMaps.GoogleMapController) {
       this.googleController = controller;
     } else if (controller.runtimeType == appleMaps.AppleMapController) {

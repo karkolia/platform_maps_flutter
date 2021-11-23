@@ -10,12 +10,6 @@ class PolylineId {
   /// value of the [PolylineId].
   final String value;
 
-  googleMaps.PolylineId googleMapsPolylineId() {
-    return googleMaps.PolylineId(
-      value,
-    );
-  }
-
   huaweiMaps.PolylineId huaweiMapsPolylineId() {
     return huaweiMaps.PolylineId(
       value,

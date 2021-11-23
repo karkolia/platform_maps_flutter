@@ -36,14 +36,6 @@ class LatLng {
         this.longitude,
       );
 
-  static List<googleMaps.LatLng> googleMapsLatLngsFromList(List<LatLng> latlngs) {
-    List<googleMaps.LatLng> googleMapsLatLngs = [];
-    latlngs.forEach((LatLng latlng) {
-      googleMapsLatLngs.add(latlng.googleLatLng);
-    });
-    return googleMapsLatLngs;
-  }
-
   static List<huaweiMaps.LatLng> huaweiMapsLatLngsFromList(List<LatLng> latlngs) {
     List<huaweiMaps.LatLng> huaweiMapsLatLngs = [];
     latlngs.forEach((LatLng latlng) {

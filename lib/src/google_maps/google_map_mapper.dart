@@ -1,51 +1,52 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMaps;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as g;
 import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 import 'package:platform_maps_flutter/src/platform_mapper.dart';
 
-class GoogleMapMapper extends PlatformMapper{
-
+class GoogleMapMapper extends PlatformMapper<g.CameraPosition, g.LatLng, g.LatLngBounds> {
   @override
-  googleMaps.MapType fromMapType(MapType mapType) {
+  g.MapType fromMapType(MapType mapType) {
     switch (mapType) {
       case MapType.normal:
-        return googleMaps.MapType.normal;
+        return g.MapType.normal;
       case MapType.satellite:
-        return googleMaps.MapType.satellite;
+        return g.MapType.satellite;
       case MapType.hybrid:
-        return googleMaps.MapType.hybrid;
+        return g.MapType.hybrid;
       default:
-        return googleMaps.MapType.normal;
+        return g.MapType.normal;
     }
   }
 
-  googleMaps.CameraPosition fromCameraPosition(CameraPosition cameraPosition) => googleMaps.CameraPosition(
+  @override
+  g.CameraPosition fromCameraPosition(CameraPosition cameraPosition) => g.CameraPosition(
         target: fromLatLng(cameraPosition.target),
         bearing: cameraPosition.bearing,
         tilt: cameraPosition.tilt,
         zoom: cameraPosition.zoom,
       );
 
-  CameraPosition toCameraPosition(googleMaps.CameraPosition cameraPosition) => CameraPosition(
+  @override
+  CameraPosition toCameraPosition(g.CameraPosition cameraPosition) => CameraPosition(
         target: toLatLng(cameraPosition.target),
         bearing: cameraPosition.bearing,
         tilt: cameraPosition.tilt,
         zoom: cameraPosition.zoom,
       );
 
-  LatLng toLatLng(googleMaps.LatLng latLng) => LatLng(latLng.latitude, latLng.longitude);
+  LatLng toLatLng(g.LatLng latLng) => LatLng(latLng.latitude, latLng.longitude);
 
-  googleMaps.LatLng fromLatLng(LatLng latLng) => googleMaps.LatLng(latLng.latitude, latLng.longitude);
+  g.LatLng fromLatLng(LatLng latLng) => g.LatLng(latLng.latitude, latLng.longitude);
 
   newCameraPosition(CameraPosition cameraPosition) =>
-      googleMaps.CameraUpdate.newCameraPosition(fromCameraPosition(cameraPosition));
+      g.CameraUpdate.newCameraPosition(fromCameraPosition(cameraPosition));
 
-  googleMaps.MinMaxZoomPreference fromMinMaxZoomPreference(MinMaxZoomPreference minMaxZoomPreference) =>
-      googleMaps.MinMaxZoomPreference(minMaxZoomPreference.minZoom, minMaxZoomPreference.maxZoom);
+  g.MinMaxZoomPreference fromMinMaxZoomPreference(MinMaxZoomPreference minMaxZoomPreference) =>
+      g.MinMaxZoomPreference(minMaxZoomPreference.minZoom, minMaxZoomPreference.maxZoom);
 
-  Set<googleMaps.Marker> fromMarkerSet(Set<Marker> markers) => markers.map(fromMarker).toSet();
+  Set<g.Marker> fromMarkerSet(Set<Marker> markers) => markers.map(fromMarker).toSet();
 
-  googleMaps.Marker fromMarker(Marker marker) => googleMaps.Marker(
+  g.Marker fromMarker(Marker marker) => g.Marker(
         markerId: fromMarkerId(marker.markerId),
         alpha: marker.alpha,
         anchor: Offset(0.5, 1.0),
@@ -54,64 +55,67 @@ class GoogleMapMapper extends PlatformMapper{
         onTap: marker.onTap,
         icon: marker.icon?.bitmapDescriptor ?? BitmapDescriptor.defaultMarker?.bitmapDescriptor,
         visible: marker.visible,
-        onDragEnd:
-            marker.onDragEnd != null ? (googleMaps.LatLng latLng) => marker.onDragEnd?.call(toLatLng(latLng)) : null,
+        onDragEnd: marker.onDragEnd != null ? (g.LatLng latLng) => marker.onDragEnd?.call(toLatLng(latLng)) : null,
         position: fromLatLng(marker.position),
       );
 
-  googleMaps.MarkerId fromMarkerId(MarkerId markerId) => googleMaps.MarkerId(markerId.value);
+  g.MarkerId fromMarkerId(MarkerId markerId) => g.MarkerId(markerId.value);
 
-  googleMaps.InfoWindow fromInfoWindow(InfoWindow infoWindow) => googleMaps.InfoWindow(
+  g.InfoWindow fromInfoWindow(InfoWindow infoWindow) => g.InfoWindow(
         anchor: infoWindow.anchor ?? Offset(0, 0),
         onTap: infoWindow.onTap,
         snippet: infoWindow.snippet,
         title: infoWindow.title,
       );
 
-  Set<googleMaps.Polyline> fromPolylineSet(Set<Polyline> polylineSet) => polylineSet.map(fromPolyline).toSet();
+  Set<g.Polyline> fromPolylineSet(Set<Polyline> polylineSet) => polylineSet.map(fromPolyline).toSet();
 
-  googleMaps.Polyline fromPolyline(Polyline polyline) => googleMaps.Polyline(
-        polylineId: polyline.polylineId.googleMapsPolylineId(),
+  g.Polyline fromPolyline(Polyline polyline) => g.Polyline(
+        polylineId: fromPolylineId(polyline.polylineId),
         color: polyline.color,
         consumeTapEvents: polyline.consumeTapEvents,
         endCap: fromCap(polyline.polylineCap),
         jointType: JointType.getGoogleMapsJointType(polyline.jointType),
         onTap: polyline.onTap,
         patterns: PatternItem.getGoogleMapsPatternItemList(polyline.patterns),
-        points: LatLng.googleMapsLatLngsFromList(polyline.points),
+        points: fromLatLngList(polyline.points),
         startCap: fromCap(polyline.polylineCap),
         visible: polyline.visible,
         width: polyline.width,
       );
 
-  googleMaps.Cap fromCap(Cap cap) {
+  g.PolylineId fromPolylineId(PolylineId polylineId) => g.PolylineId(polylineId.value);
+
+  List<g.LatLng> fromLatLngList(List<LatLng> latlngList) => latlngList.map(fromLatLng).toList();
+
+  g.Cap fromCap(Cap cap) {
     switch (cap) {
       case Cap.buttCap:
-        return googleMaps.Cap.buttCap;
+        return g.Cap.buttCap;
       case Cap.roundCap:
-        return googleMaps.Cap.roundCap;
+        return g.Cap.roundCap;
       case Cap.squareCap:
-        return googleMaps.Cap.squareCap;
+        return g.Cap.squareCap;
     }
   }
 
-  Set<googleMaps.Polygon> fromPolygonSet(Set<Polygon> polygonSet) => polygonSet.map(fromPolygon).toSet();
+  Set<g.Polygon> fromPolygonSet(Set<Polygon> polygonSet) => polygonSet.map(fromPolygon).toSet();
 
-  googleMaps.Polygon fromPolygon(Polygon polygon) => googleMaps.Polygon(
-        polygonId: googleMaps.PolygonId(polygon.polygonId.value),
+  g.Polygon fromPolygon(Polygon polygon) => g.Polygon(
+        polygonId: g.PolygonId(polygon.polygonId.value),
         consumeTapEvents: polygon.consumeTapEvents,
         fillColor: polygon.fillColor,
         onTap: polygon.onTap,
-        points: LatLng.googleMapsLatLngsFromList(polygon.points),
+        points: fromLatLngList(polygon.points),
         strokeColor: polygon.strokeColor,
         strokeWidth: polygon.strokeWidth,
         visible: polygon.visible,
       );
 
-  Set<googleMaps.Circle> fromCircleSet(Set<Circle> circleSet) => circleSet.map(fromCircle).toSet();
+  Set<g.Circle> fromCircleSet(Set<Circle> circleSet) => circleSet.map(fromCircle).toSet();
 
-  googleMaps.Circle fromCircle(Circle circle) => googleMaps.Circle(
-        circleId: googleMaps.CircleId(circle.circleId.value),
+  g.Circle fromCircle(Circle circle) => g.Circle(
+        circleId: g.CircleId(circle.circleId.value),
         consumeTapEvents: circle.consumeTapEvents,
         fillColor: circle.fillColor,
         onTap: circle.onTap,
@@ -122,7 +126,7 @@ class GoogleMapMapper extends PlatformMapper{
         visible: circle.visible,
       );
 
-  LatLngBounds toLatLngBounds(googleMaps.LatLngBounds bounds) => LatLngBounds(
+  LatLngBounds toLatLngBounds(g.LatLngBounds bounds) => LatLngBounds(
         southwest: toLatLng(bounds.southwest),
         northeast: toLatLng(bounds.northeast),
       );
