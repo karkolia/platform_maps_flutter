@@ -1,10 +1,10 @@
-part of './google_map_wrapper.dart';
+part of './huawei_map_wrapper.dart';
 
-class GoogleMapControllerWrapper extends PlatformMapControllerWrapper {
-  final g.GoogleMapController controller;
-  final GoogleMapMapper mapper;
+class HuaweiMapControllerWrapper extends PlatformMapControllerWrapper {
+  final h.HuaweiMapController controller;
+  final HuaweiMapMapper mapper;
 
-  GoogleMapControllerWrapper(this.controller, this.mapper);
+  HuaweiMapControllerWrapper(this.controller, this.mapper);
 
   @override
   Future showMarkerInfoWindow(MarkerId markerId) => controller.showMarkerInfoWindow(mapper.fromMarkerId(markerId));
@@ -13,8 +13,10 @@ class GoogleMapControllerWrapper extends PlatformMapControllerWrapper {
   Future hideMarkerInfoWindow(MarkerId markerId) => controller.hideMarkerInfoWindow(mapper.fromMarkerId(markerId));
 
   @override
-  Future<bool> isMarkerInfoWindowShown(MarkerId markerId) =>
-      controller.isMarkerInfoWindowShown(mapper.fromMarkerId(markerId));
+  Future<bool> isMarkerInfoWindowShown(MarkerId markerId) async {
+    var result = await controller.isMarkerInfoWindowShown(mapper.fromMarkerId(markerId));
+    return (result == null) ? false : result;
+  }
 
   @override
   Future<void> animateCamera(cameraUpdate) => controller.animateCamera(mapper.fromCameraUpdate(cameraUpdate));
@@ -24,7 +26,7 @@ class GoogleMapControllerWrapper extends PlatformMapControllerWrapper {
 
   @override
   Future<LatLngBounds> getVisibleRegion() async {
-    g.LatLngBounds googleBounds = await controller.getVisibleRegion();
+    h.LatLngBounds googleBounds = await controller.getVisibleRegion();
     return mapper.toLatLngBounds(googleBounds);
   }
 

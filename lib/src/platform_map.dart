@@ -1,6 +1,6 @@
 part of platform_maps_flutter;
 
-typedef void MapCreatedCallback(LegacyPlatformMapController controller);
+typedef void MapCreatedCallback(PlatformMapControllerWrapper controller);
 typedef void CameraPositionCallback(CameraPosition position);
 
 class PlatformMap extends StatefulWidget {
@@ -39,7 +39,6 @@ class PlatformMap extends StatefulWidget {
   }
 
   /// Callback method for when the map is ready to be used.
-  ///
   /// Used to receive a [GoogleMapController] for this [GoogleMap].
   final MapCreatedCallback? onMapCreated;
 
@@ -53,7 +52,6 @@ class PlatformMap extends StatefulWidget {
   final MapType mapType;
 
   /// Preferred bounds for the camera zoom level.
-  ///
   /// Actual bounds depend on map data and device.
   final MinMaxZoomPreference minMaxZoomPreference;
 
@@ -65,7 +63,6 @@ class PlatformMap extends StatefulWidget {
 
   /// True if the map view should show zoom controls. This includes two buttons
   /// to zoom in and zoom out. The default value is to show zoom controls.
-  ///
   /// This is only supported on Android. And this field is silently ignored on iOS.
   final bool zoomControlsEnabled;
 
@@ -91,7 +88,6 @@ class PlatformMap extends StatefulWidget {
   final Set<Circle> circles;
 
   /// Called when the camera starts moving.
-  ///
   /// This can be initiated by the following:
   /// 1. Non-gesture animation initiated in response to user actions.
   ///    For example: zoom buttons, my location button, or marker clicks.
@@ -102,7 +98,6 @@ class PlatformMap extends StatefulWidget {
 
   /// Called repeatedly as the camera continues to move after an
   /// onCameraMoveStarted call.
-  ///
   /// This may be called as often as once every frame and should
   /// not perform expensive operations.
   final CameraPositionCallback? onCameraMove;
@@ -118,7 +113,6 @@ class PlatformMap extends StatefulWidget {
   final ArgumentCallback<LatLng>? onLongPress;
 
   /// True if a "My Location" layer should be shown on the map.
-  ///
   /// This layer includes a location indicator at the current device location,
   /// as well as a My Location button.
   /// * The indicator is a small blue dot if the device is stationary, or a
@@ -159,12 +153,10 @@ class PlatformMap extends StatefulWidget {
   final bool trafficEnabled;
 
   /// Which gestures should be consumed by the map.
-  ///
   /// It is possible for other gesture recognizers to be competing with the map on pointer
   /// events, e.g if the map is inside a [ListView] the [ListView] will want to handle
   /// vertical drags. The map will claim gestures that are recognized by any of the
   /// recognizers on this list.
-  ///
   /// When this set is empty, the map will only handle pointer events for gestures that
   /// were not claimed by any other gesture recognizer.
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
@@ -174,126 +166,22 @@ class PlatformMap extends StatefulWidget {
 }
 
 class _PlatformMapState extends State<PlatformMap> {
-  late PlatformMapWrapper mapWrapper;
-
   @override
   Widget build(BuildContext context) {
+    PlatformMapWrapper mapWrapper;
     switch (PlatformMap.selectedMap) {
       case Map.googleMaps:
-        this.mapWrapper = GoogleMapWrapper(widget);
-        return mapWrapper.getMap();
+        mapWrapper = GoogleMapWrapper(widget);
+        break;
       case Map.huaweiMaps:
-        return huaweiMaps.HuaweiMap(
-            initialCameraPosition: widget.initialCameraPosition.huaweiMapsCameraPosition,
-            compassEnabled: widget.compassEnabled,
-            mapType: _getHuaweiMapType(),
-            padding: widget.padding,
-            markers: Marker.toHuaweiMapsMarkerSet(widget.markers),
-            polylines: Polyline.toHuaweiMapsPolylines(widget.polylines),
-            polygons: Polygon.toHuaweiMapsPolygonSet(widget.polygons),
-            circles: Circle.toHuaweiMapsCircleSet(widget.circles),
-            gestureRecognizers: widget.gestureRecognizers,
-            onCameraIdle: widget.onCameraIdle,
-            myLocationButtonEnabled: widget.myLocationButtonEnabled,
-            myLocationEnabled: widget.myLocationEnabled,
-            onCameraMoveStarted: widget.onCameraMoveStarted != null ? (int) => widget.onCameraMoveStarted!() : null,
-            tiltGesturesEnabled: widget.tiltGesturesEnabled,
-            rotateGesturesEnabled: widget.rotateGesturesEnabled,
-            zoomControlsEnabled: widget.zoomControlsEnabled,
-            zoomGesturesEnabled: widget.zoomGesturesEnabled,
-            scrollGesturesEnabled: widget.scrollGesturesEnabled,
-            onMapCreated: _onMapCreated,
-            onCameraMove: _onCameraMove,
-            onClick: _onTap,
-            onLongPress: _onLongPress,
-            trafficEnabled: widget.trafficEnabled,
-            minMaxZoomPreference: widget.minMaxZoomPreference.huaweiMapsZoomPreference);
+        mapWrapper = HuaweiMapWrapper(widget);
+        break;
       case Map.appleMapKit:
-        return appleMaps.AppleMap(
-          initialCameraPosition: widget.initialCameraPosition.appleMapsCameraPosition,
-          compassEnabled: widget.compassEnabled,
-          mapType: _getAppleMapType(),
-          padding: widget.padding,
-          annotations: Marker.toAppleMapsAnnotationSet(widget.markers),
-          polylines: Polyline.toAppleMapsPolylines(widget.polylines),
-          polygons: Polygon.toAppleMapsPolygonSet(widget.polygons),
-          circles: Circle.toAppleMapsCircleSet(widget.circles),
-          gestureRecognizers: widget.gestureRecognizers,
-          onCameraIdle: widget.onCameraIdle,
-          myLocationButtonEnabled: widget.myLocationButtonEnabled,
-          myLocationEnabled: widget.myLocationEnabled,
-          onCameraMoveStarted: widget.onCameraMoveStarted,
-          pitchGesturesEnabled: widget.tiltGesturesEnabled,
-          rotateGesturesEnabled: widget.rotateGesturesEnabled,
-          zoomGesturesEnabled: widget.zoomGesturesEnabled,
-          scrollGesturesEnabled: widget.scrollGesturesEnabled,
-          onMapCreated: _onMapCreated,
-          onCameraMove: _onCameraMove,
-          onTap: _onTap,
-          onLongPress: _onLongPress,
-          trafficEnabled: widget.trafficEnabled,
-          minMaxZoomPreference: widget.minMaxZoomPreference.appleMapsZoomPreference,
-        );
+        mapWrapper = AppleMapWrapper(widget);
+        break;
       default:
         return Text("Platform not yet implemented");
     }
-  }
-
-  void _onMapCreated(dynamic controller) {
-    widget.onMapCreated?.call(LegacyPlatformMapController(controller));
-  }
-
-  void _onCameraMove(dynamic cameraPosition) {
-    if (Platform.isIOS) {
-      widget.onCameraMove?.call(
-        CameraPosition.fromAppleMapCameraPosition(
-          cameraPosition as appleMaps.CameraPosition,
-        ),
-      );
-    } else if (Platform.isAndroid) {
-      widget.onCameraMove?.call(
-        CameraPosition.fromGoogleMapCameraPosition(
-          cameraPosition as googleMaps.CameraPosition,
-        ),
-      );
-    }
-  }
-
-  void _onTap(dynamic position) {
-    if (Platform.isIOS) {
-      widget.onTap?.call(LatLng._fromAppleLatLng(position as appleMaps.LatLng));
-    } else if (Platform.isAndroid) {
-      widget.onTap?.call(LatLng.fromGoogleLatLng(position as googleMaps.LatLng));
-    }
-  }
-
-  void _onLongPress(dynamic position) {
-    if (Platform.isIOS) {
-      widget.onLongPress?.call(LatLng._fromAppleLatLng(position as appleMaps.LatLng));
-    } else if (Platform.isAndroid) {
-      widget.onLongPress?.call(LatLng.fromGoogleLatLng(position as googleMaps.LatLng));
-    }
-  }
-
-  appleMaps.MapType _getAppleMapType() {
-    if (widget.mapType == MapType.normal) {
-      return appleMaps.MapType.standard;
-    } else if (widget.mapType == MapType.satellite) {
-      return appleMaps.MapType.satellite;
-    } else if (widget.mapType == MapType.hybrid) {
-      return appleMaps.MapType.hybrid;
-    }
-    return appleMaps.MapType.standard;
-  }
-
-  huaweiMaps.MapType _getHuaweiMapType() {
-    if (widget.mapType == MapType.normal) {
-      return huaweiMaps.MapType.normal;
-    } else if (widget.mapType == MapType.satellite) {
-      return huaweiMaps.MapType.terrain;
-    } else if (widget.mapType == MapType.hybrid) {
-      return huaweiMaps.MapType.none;
-    }
-    return huaweiMaps.MapType.normal;
+    return mapWrapper.getMap();
   }
 }

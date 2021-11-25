@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:flutter/cupertino.dart';
 import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 abstract class PlatformMapper<T, U, V> {
@@ -11,7 +14,7 @@ abstract class PlatformMapper<T, U, V> {
 
   dynamic fromLatLng(LatLng latLng);
 
-  dynamic newCameraPosition(CameraPosition cameraPosition);
+  dynamic fromLatLngBounds(LatLngBounds latLngBounds);
 
   dynamic fromMinMaxZoomPreference(MinMaxZoomPreference minMaxZoomPreference);
 
@@ -27,6 +30,10 @@ abstract class PlatformMapper<T, U, V> {
 
   dynamic fromPolyline(Polyline polyline);
 
+  dynamic fromPolylineId(PolylineId polylineId);
+
+  dynamic fromLatLngList(List<LatLng> latLngList);
+
   dynamic fromCap(Cap cap);
 
   dynamic fromPolygonSet(Set<Polygon> polygonSet);
@@ -38,4 +45,27 @@ abstract class PlatformMapper<T, U, V> {
   dynamic fromCircle(Circle circle);
 
   LatLngBounds toLatLngBounds(V bounds);
+
+  dynamic zoomBy(double amount);
+
+  dynamic zoomIn();
+
+  dynamic zoomOut();
+
+  dynamic zoomTo(double zoom);
+
+  dynamic fromPatternItem(PatternItem patternItem);
+
+  dynamic fromPatternItemList(List<PatternItem> patternItemList);
+
+  dynamic fromJointType(JointType jointType);
+
+  dynamic defaultMarkerBitmapDescriptor();
+
+  Future<BitmapDescriptor> bitmapDescriptorFromAssetImage(ImageConfiguration configuration, String assetName,
+      {AssetBundle? bundle, String? package});
+
+  BitmapDescriptor bitmapDescriptorFromBytes(Uint8List byteData);
+
+  dynamic fromCameraUpdate(CameraUpdate cameraUpdate);
 }

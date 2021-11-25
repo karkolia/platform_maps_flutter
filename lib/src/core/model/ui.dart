@@ -31,13 +31,6 @@ class MinMaxZoomPreference {
   /// The preferred maximum zoom level or null, if unbounded from above.
   final double? maxZoom;
 
-  appleMaps.MinMaxZoomPreference get appleMapsZoomPreference =>
-      appleMaps.MinMaxZoomPreference(this.minZoom, this.maxZoom);
-
-  huaweiMaps.MinMaxZoomPreference get huaweiMapsZoomPreference => this.minZoom == null || this.maxZoom == null
-      ? huaweiMaps.MinMaxZoomPreference.unbounded
-      : huaweiMaps.MinMaxZoomPreference(this.minZoom!, this.maxZoom!);
-
   /// Converts this object to something serializable in JSON.
   dynamic toJson() => <dynamic>[minZoom, maxZoom];
 }

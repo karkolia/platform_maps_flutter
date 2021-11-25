@@ -125,46 +125,6 @@ class Circle {
         onTap == typedOther.onTap;
   }
 
-  static Set<huaweiMaps.Circle> toHuaweiMapsCircleSet(Set<Circle> circles) {
-    List<huaweiMaps.Circle> _circles = <huaweiMaps.Circle>[];
-    for (Circle circle in circles) {
-      _circles.add(circle.huaweiMapsCircle);
-    }
-    return Set.from(_circles);
-  }
-
-  static Set<appleMaps.Circle> toAppleMapsCircleSet(Set<Circle> circles) {
-    List<appleMaps.Circle> _circles = <appleMaps.Circle>[];
-    for (Circle circle in circles) {
-      _circles.add(circle.appleMapsCircle);
-    }
-    return Set.from(_circles);
-  }
-
-  huaweiMaps.Circle get huaweiMapsCircle => huaweiMaps.Circle(
-        circleId: huaweiMaps.CircleId(this.circleId.value),
-        clickable: this.consumeTapEvents,
-        fillColor: this.fillColor,
-        onClick: this.onTap,
-        center: this.center.huaweiLatLng,
-        radius: this.radius,
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        visible: this.visible,
-      );
-
-  appleMaps.Circle get appleMapsCircle => appleMaps.Circle(
-        circleId: appleMaps.CircleId(this.circleId.value),
-        consumeTapEvents: this.consumeTapEvents,
-        fillColor: this.fillColor,
-        onTap: this.onTap,
-        center: this.center.appleLatLng,
-        radius: this.radius,
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        visible: this.visible,
-      );
-
   @override
   int get hashCode => circleId.hashCode;
 }

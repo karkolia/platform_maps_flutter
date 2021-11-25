@@ -124,42 +124,4 @@ class Polygon {
 
   @override
   int get hashCode => polygonId.hashCode;
-
-  static Set<huaweiMaps.Polygon> toHuaweiMapsPolygonSet(Set<Polygon> polygons) {
-    List<huaweiMaps.Polygon> _polygons = <huaweiMaps.Polygon>[];
-    for (Polygon polygon in polygons) {
-      _polygons.add(polygon.huaweiMapsPolygon);
-    }
-    return Set.from(_polygons);
-  }
-
-  static Set<appleMaps.Polygon> toAppleMapsPolygonSet(Set<Polygon> polygons) {
-    List<appleMaps.Polygon> _polygons = <appleMaps.Polygon>[];
-    for (Polygon polygon in polygons) {
-      _polygons.add(polygon.appleMapsPolygon);
-    }
-    return Set.from(_polygons);
-  }
-
-  huaweiMaps.Polygon get huaweiMapsPolygon => huaweiMaps.Polygon(
-        polygonId: huaweiMaps.PolygonId(this.polygonId.value),
-        clickable: this.consumeTapEvents,
-        fillColor: this.fillColor,
-        onClick: this.onTap,
-        points: LatLng.huaweiMapsLatLngsFromList(this.points),
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        visible: this.visible,
-      );
-
-  appleMaps.Polygon get appleMapsPolygon => appleMaps.Polygon(
-        polygonId: appleMaps.PolygonId(this.polygonId.value),
-        consumeTapEvents: this.consumeTapEvents,
-        fillColor: this.fillColor,
-        onTap: this.onTap,
-        points: LatLng.appleMapsLatLngsFromList(this.points),
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        visible: this.visible,
-      );
 }

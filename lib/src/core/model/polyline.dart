@@ -9,18 +9,6 @@ class PolylineId {
 
   /// value of the [PolylineId].
   final String value;
-
-  huaweiMaps.PolylineId huaweiMapsPolylineId() {
-    return huaweiMaps.PolylineId(
-      value,
-    );
-  }
-
-  appleMaps.PolylineId appleMapsPolylineId() {
-    return appleMaps.PolylineId(
-      value,
-    );
-  }
 }
 
 /// Draws a line through geographical locations on the map.
@@ -105,49 +93,6 @@ class Polyline {
 
   /// Callbacks to receive tap events for polyline placed on this map.
   final VoidCallback? onTap;
-
-  static Set<huaweiMaps.Polyline> toHuaweiMapsPolylines(Set<Polyline> polylines) {
-    Set<huaweiMaps.Polyline> huaweiMapsPolylines = Set();
-    polylines.forEach((Polyline polyline) {
-      huaweiMapsPolylines.add(
-        huaweiMaps.Polyline(
-          polylineId: polyline.polylineId.huaweiMapsPolylineId(),
-          color: polyline.color,
-          clickable: polyline.consumeTapEvents,
-          endCap: _Cap.huaweiPolylineCap(polyline.polylineCap),
-          jointType: JointType.getHuaweiMapsJointType(polyline.jointType),
-          onClick: polyline.onTap,
-          patterns: PatternItem.getHuaweiMapsPatternItemList(polyline.patterns),
-          points: LatLng.huaweiMapsLatLngsFromList(polyline.points),
-          startCap: _Cap.huaweiPolylineCap(polyline.polylineCap),
-          visible: polyline.visible,
-          width: polyline.width,
-        ),
-      );
-    });
-    return huaweiMapsPolylines;
-  }
-
-  static Set<appleMaps.Polyline> toAppleMapsPolylines(Set<Polyline> polylines) {
-    Set<appleMaps.Polyline> appleMapsPolylines = Set();
-    polylines.forEach((Polyline polyline) {
-      appleMapsPolylines.add(
-        appleMaps.Polyline(
-          polylineId: polyline.polylineId.appleMapsPolylineId(),
-          color: polyline.color,
-          consumeTapEvents: polyline.consumeTapEvents,
-          polylineCap: _Cap.applePolylineCap(polyline.polylineCap),
-          jointType: JointType.getAppleMapsJointType(polyline.jointType),
-          onTap: polyline.onTap,
-          patterns: PatternItem.getAppleMapsPatternItemList(polyline.patterns),
-          points: LatLng.appleMapsLatLngsFromList(polyline.points),
-          visible: polyline.visible,
-          width: polyline.width,
-        ),
-      );
-    });
-    return appleMapsPolylines;
-  }
 
   Polyline copyWith({
     Color? colorParam,
